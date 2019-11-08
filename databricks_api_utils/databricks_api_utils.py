@@ -1,7 +1,7 @@
 from databricks_api import DatabricksAPI
 import os
 from base64 import b64decode, b64encode
-from glob import glob
+from warnings import warn
 
 
 def export_dir(db_api_connection: DatabricksAPI, db_path: str, local_path: str, **kwargs):
@@ -28,29 +28,37 @@ def export_file(db_api_connection: DatabricksAPI, file_path: str, local_path: st
         local_file.write(file_content)
 
 
+def list_relative_file_paths(path: str):
+    """Returns a list of relative file paths to all files in a given directory"""
+    file_paths = [os.path.join(os.path.relpath(path), file) for file in os.listdir(path)]
+    return [file for file in filter(os.path.isfile, file_paths)]
+
+
 def import_dir(db_api_connection: DatabricksAPI, db_path: str, local_path: str = '.',
-               format: str = 'SOURCE', source_format: str = '.py', **kwargs):
+               format: str = 'SOURCE', **kwargs):
     """Imports all files of a certain format in a local directory to Databricks
     The Databricks workspace API only supports importing directories as .DBC
     This allows you to import a directory of files in source (or whatever) format
     """
-    file_ext = format_to_extension(format, source_format)
-    file_filterer = FileExtFilter(file_ext)
-    file_language = extension_to_language(file_ext)
-
-    files_to_import = list_source_files(local_path)
+    file_filterer = FileFormatTypeFilter(format)
+    files_to_import = list_relative_file_paths(local_path)
     files_to_import = [file for file in filter(file_filterer.filter, files_to_import)]
+
+    if len(files_to_import) == 0:
+        warn(f"No files in {format} format located at {local_path}.")
 
     for file in files_to_import:
         file_name = os.path.split(file)[-1]
-        file_name = os.path.splitext(file_name)[0]
+        file_name, file_ext = os.path.splitext(file_name)[0:2]
+        file_language = extension_to_language(file_ext)
         db_file_path = os.path.join(db_path, file_name)
         import_file(db_api_connection, db_file_path, file, format, file_language, **kwargs)
 
 
 def import_file(db_api_connection: DatabricksAPI, db_path: str, local_path: str = '.',
                 format: str = 'SOURCE', language: str = 'PYTHON', **kwargs):
-    file_content = open(local_path, 'rb').read()
+    with open(local_path, 'rb') as file:
+        file_content = file.read()
     file_content = b64encode(file_content).decode()
 
     db_api_connection.workspace.import_workspace(
@@ -70,40 +78,21 @@ _language_dict = {'.sc': 'SCALA',
 
 
 def extension_to_language(extension: str = '.py'):
-    return _language_dict.get(extension, _language_dict['.py'])
-
-#TODO: Rather than supplying a source format, default to export all source formats
-def format_to_extension(format: str = 'SOURCE', source_format: str = '.py'):
-    format_dict = {'SOURCE': source_format,
-                   'JUPYTER': '.ipynb',
-                   'HTML': '.html',
-                   'DBC': '.dbc'}
-
-    return format_dict.get(format, source_format)
+    return _language_dict.get(extension)
 
 
-_glob_dict = {True: '**/*.*',
-              False: '*.*'}
+_format_dict = {'SOURCE': ['.py', '.r', '.scala', '.sc', '.sql'],
+                'JUPYTER': '.ipynb',
+                'HTML': '.html',
+                'DBC': '.dbc'}
 
 
-def list_source_files(path: str = '.', file_ext: str = '.py', recursive: bool = True):
-    """List all files of a given extension"""
-    assert isinstance(recursive, bool), "expected recursive to be type bool"
-    glob_path = glob_dict.get(recursive)
-
-    files = glob(os.path.join(path, glob_path), recursive=recursive)
-    file_filterer = FileExtFilter(file_ext)
-    filtered_files = [file for file in filter(file_filterer.filter, files)]
-    return filtered_files
-
-
-class FileExtFilter:
-    """Generates filter functions for a given file extension"""
-
-    def __init__(self, file_ext: str):
-        self.file_ext = file_ext
+class FileFormatTypeFilter:
+    def __init__(self, format: str):
+        self.format_type = _format_dict.get(format)
 
     def filter(self, item):
         _, item_ext = os.path.splitext(item)
-        file_ext_comparison = self.file_ext == item_ext
-        return file_ext_comparison
+        file_format_comparison = item_ext.lower() in self.format_type
+        return file_format_comparison
+

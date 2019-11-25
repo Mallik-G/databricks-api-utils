@@ -13,9 +13,14 @@ def export_dir(db_api_connection: DatabricksAPI, db_path: str, local_path: str, 
     files_to_export = db_api_connection.workspace.list(path=db_path)
     files_to_export = files_to_export['objects']
 
+    for file in files_to_export:
+        if file['object_type'] not in ['DIRECTORY', 'NOTEBOOK']:
+            warn(f"file: {file['path']} of object type {file['object_type']} cannot be exported.\n"
+                 + f"{file['object_type']} is not supported by the Databricks Workspace API")
+
     if recursive:
         to_parse = [i for i in files_to_export if i['object_type'] == 'DIRECTORY']
-        files_to_export = [i for i in files_to_export if i['object_type'] != 'DIRECTORY']
+        files_to_export = [i for i in files_to_export if i['object_type'] == 'NOTEBOOK']
 
         while len(to_parse) > 0:
             parse = to_parse.pop()
@@ -24,8 +29,10 @@ def export_dir(db_api_connection: DatabricksAPI, db_path: str, local_path: str, 
             for i in sub_obj:
                 if i['object_type'] == 'DIRECTORY':
                     to_parse.append(i)
-                else:
+                elif i['object_type'] == 'NOTEBOOK':
                     files_to_export.append(i)
+                else:
+                    warn(f"file: {i['path']} of object type {i['object_type']} cannot be exported")
 
         for file in files_to_export:
             file['db_relative_path'] = Path(file['path']).relative_to(db_path).parent
@@ -38,7 +45,7 @@ def export_dir(db_api_connection: DatabricksAPI, db_path: str, local_path: str, 
             export_file(db_api_connection, file_path, file_local_path, **kwargs)
 
     else:
-        files_to_export = [i for i in files_to_export if i['object_type'] != 'DIRECTORY']
+        files_to_export = [i for i in files_to_export if i['object_type'] == 'NOTEBOOK']
 
         for file in files_to_export:
             file_path = file['path']

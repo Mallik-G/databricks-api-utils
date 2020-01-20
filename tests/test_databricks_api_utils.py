@@ -26,7 +26,7 @@ def get_dir_contents_dict(path: str):
     file_names = [os.path.split(file)[-1] for file in files]
     file_contents = []
     for file in files:
-        with open(file, 'rb') as file_con:
+        with open(file=file, mode='r', newline=None) as file_con:
             file_contents.append(file_con.read())
     return dict(zip(file_names, file_contents))
 

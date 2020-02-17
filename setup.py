@@ -11,7 +11,8 @@ with open('README.rst') as readme_file:
 with open('HISTORY.rst') as history_file:
     history = history_file.read()
 
-requirements = [ ]
+with open('requirements.txt') as requirements_file:
+    requirements = requirements_file.read().splitlines()
 
 setup_requirements = [ ]
 
@@ -45,6 +46,6 @@ setup(
     test_suite='tests',
     tests_require=test_requirements,
     url='https://github.com/sam-harvey/databricks_api_utils',
-    version='0.1.0',
+    version='0.1.1',
     zip_safe=False,
 )

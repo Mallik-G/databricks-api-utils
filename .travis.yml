@@ -1,17 +1,19 @@
-# Config file for automatic testing at travis-ci.org
-
+branches:
+  only:
+  - "/.*/"
 language: python
 python:
-  - 3.8
-  - 3.7
-  - 3.6
-  - 3.5
-  - 2.7
-
-# Command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
-install: pip install -U tox-travis
-
-# Command to run tests, e.g. python setup.py test
-script: tox
-
-
+- 3.8
+- 3.7
+- 3.6
+install:
+- pip install -U tox-travis
+script:
+- tox
+deploy:
+  password:
+    secure: s8F0M8gW1sB9fegNqIbrI2QrWN5Tz2cR9kATuyF1DgWfANprvb1aoiGdT8UxJezjMQ00r/UBPCiTEJc/CchK4SuaC4Iq5f+uusF2H2Wh752srt4md+kgjDipNHzipWvmIRdH/cwaMpUhigPl0QdKyXtFTHmIyARDKkeCSP6RtigSz/k6w2Dtn7LX8qabqmy6W8jOfknnrZGCQwtXnF7MFc7CwC3nltpb2YgoRk3WRyRI8odjxG1PMyOIdzb9/PMIwpIbgZSm2gmAfciIRkUfCleawdNc0uUTuiTeG3KlnNKA74D3aJIip3eUUdXYWP6lXlWMPH4uaEObIYkA+8cvVGwcfpD5wiqaw7K+kl8IlPSPAjGT6usZDwIRHF2gqLFLWNh/mCvzOa7G022ofi5fA8cT+ZMyKh3dWJsQAyWluAKs2pf88LPwe4ls2N3dYOUKxDeK6STah0a7ICPvb8REzSUoGkkz6Aa6zotDi5R3DpESz1nydErLPWhoea2rKeYzKUTQIQg3gcspo+1FZq/Uo54n17yHsHt0GirbkQKzr6yypTkQviZFcEK7zwLCtlbnU7Gd+EcT0EBO4s6Qo4wivNw3FP+EOtXQLo/oij1mq4pPNRfu8l029l4xjZrKWQ3HXsLqM/2tZbtOBfaF0lirP2pxSsJKq2PlHPDR8jDqtmw=
+env:
+  global:
+  - secure: RUZ7Qv1tdrHYKJTQyTWobfOrBF9UCCWuGJnOS7As23KLaH4fRburHa2sxnOhcTUlKLyDnwpd2VUWRQUx34rWm0uFsDsg4dvim6CEKjSnE5fs5t7d0uezviopLwImftW+o4UrmmtzJnSWv9dQEzkzPW5KmQD48EXWhX84mLCYnRAyPF000iKK/ZIDpU/Wso8e2Tujkt2JYHNV4q3ReL/P9Vk/hZb3zc9M8PKijDxIo6Jea9z6mmbwHTpJ7PqjiixEeBSHnQHG2Tiv7pmWyyi7xvqLKcx/AVq8N7ppED+7NqXPChRa9fDfCp/hDFtmeTQBy9y3ah1qwbpRXug8u9WKH8/nXS8JS9unco4BF25TfbObsAgb67HhezXzGoO7BEi/U+UPXZr4xX0mJ6rZeINbkx4GojGfAPUvjzRCmEY8wUkg8bUdqOFz3eysFDcJbLIcvPTWkXgJ6/jQoltCoukt1Efi//IUxAHEtCyy7GVWahxAkBGOVKrxrIadGrDEKmV/40/O3xG+lunIH5EYX99lc7gs06qPVFdwxHotmU6qe04H8ljY/9XkfXw4DOt80zuvmPtQcC14o6Tn6LOJYEXUohkeaQP0vLOnfXwhyQdVNDXCtCvBTlK0+lvpmmYHqEAHMp2lhOzJTGDivKUGJ+iGL3nQ+O3VOsKq9btq/RU7MOk=
+  - secure: S5UlolNew+p5xsjIZsBEt048HAOjRxZrwucSWig7Km2OtYuUTWraNpHqOvimMRwSmsMXFPcTf9u3KtKuG+AhFEbMb7OSfIUIknmpM0G9klFatWtJOKeOiYfT8UJ4cl7xTaTDg8a1wJR5OdeWnnOKBOsp+r0+EDZh2AR5NLPvW13TgUGDvo1OyyNAS+Jmn3OiKYc+68ZJyqsH8ShsKm3HZD2hg0WOBjYSNRP/4kOUXa1EjQUO7BUrdqeeNKyJw0F9eNPJNOoruF7J+VIQo/NJEBMvTGkYqx2/s0WKA7e8MP3GGGDquelca+KCTrnTvrwKnK83V/PAPHQCQ+xf215zUviDGAJZFe03h5f46/n8mjD5UDmW0o280V2QZJSQxumiNuyIsOZkbAhijwbSF9u9viLXuqKf7DDOOakC7bZcRo1Q938SwJa0e5VZJdnFTo3Qk+OeHHzq2LGIFB99oxKwqZzUXb742DFk50jBBwljVXZ/kequtZqg1cg4BpsEyTZab5SEwwxnKDm5SxIhZzMdcTzfAhDrhvhQ04kRaHfkEy1CbNiZWEd45Atl+WTrb9XCZxQ5pVgJnmfvQjlZ3JtjI/bcP/2nauwQ4Cz504ykmU9Wxm0TxN8ITP7kgPP2jQTTCFtGoSvji0ZBFNb9Zm7F7B/VkI9JSc+LzhSAx/zokC0=

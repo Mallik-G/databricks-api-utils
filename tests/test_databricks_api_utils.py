@@ -9,8 +9,9 @@ from databricks_api_utils import io
 from shutil import rmtree
 from pathlib import Path
 import time
+from random import random
 
-testing_dir = '/tmp-db-api-utils/'
+testing_dir = '/tmp-db-api-utils' + str(int(random()*1e8))
 local_test_dir = './tests/local-temp/'
 lang_examples = 'tests/fixtures/lang_examples'
 project_dir = 'tests/fixtures/project_example'

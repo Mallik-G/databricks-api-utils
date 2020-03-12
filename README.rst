@@ -7,7 +7,7 @@ Databricks API Utilities
         :target: https://pypi.python.org/pypi/databricks_api_utils
 
 .. image:: https://travis-ci.com/sam-harvey/databricks-api-utils.svg
-        :target: https://travis-ci.com/sam-harvey/databricks_api_utils
+        :target: https://travis-ci.com/github/sam-harvey/databricks-api-utils
 
 .. image:: https://readthedocs.org/projects/databricks-api-utils/badge/?version=latest
         :target: https://databricks-api-utils.readthedocs.io/en/latest/?badge=latest

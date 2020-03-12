@@ -4,13 +4,13 @@ branches:
 language: python
 python:
 - 3.8
-- 3.7
-- 3.6
 install:
 - pip install -U tox-travis
 script:
 - tox
 deploy:
+  provider: pypi
+  user: "__token__"
   password:
     secure: s8F0M8gW1sB9fegNqIbrI2QrWN5Tz2cR9kATuyF1DgWfANprvb1aoiGdT8UxJezjMQ00r/UBPCiTEJc/CchK4SuaC4Iq5f+uusF2H2Wh752srt4md+kgjDipNHzipWvmIRdH/cwaMpUhigPl0QdKyXtFTHmIyARDKkeCSP6RtigSz/k6w2Dtn7LX8qabqmy6W8jOfknnrZGCQwtXnF7MFc7CwC3nltpb2YgoRk3WRyRI8odjxG1PMyOIdzb9/PMIwpIbgZSm2gmAfciIRkUfCleawdNc0uUTuiTeG3KlnNKA74D3aJIip3eUUdXYWP6lXlWMPH4uaEObIYkA+8cvVGwcfpD5wiqaw7K+kl8IlPSPAjGT6usZDwIRHF2gqLFLWNh/mCvzOa7G022ofi5fA8cT+ZMyKh3dWJsQAyWluAKs2pf88LPwe4ls2N3dYOUKxDeK6STah0a7ICPvb8REzSUoGkkz6Aa6zotDi5R3DpESz1nydErLPWhoea2rKeYzKUTQIQg3gcspo+1FZq/Uo54n17yHsHt0GirbkQKzr6yypTkQviZFcEK7zwLCtlbnU7Gd+EcT0EBO4s6Qo4wivNw3FP+EOtXQLo/oij1mq4pPNRfu8l029l4xjZrKWQ3HXsLqM/2tZbtOBfaF0lirP2pxSsJKq2PlHPDR8jDqtmw=
 env:

@@ -16,7 +16,7 @@ Databricks API Utilities
 
 
 
-Helper functions for working with databricks-api
+Helper functions for working with the Databricks API
 
 
 * Free software: MIT license
@@ -26,7 +26,7 @@ Helper functions for working with databricks-api
 Features
 --------
 
-* TODO
+* Import/Export a folder of files to/from Databricks in source format. Rather than only being able to import/export in binary DBC format.
 
 Credits
 -------
